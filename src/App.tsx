@@ -1,10 +1,9 @@
-import ListGroup from "./components/ListGroup";
+import Button from "./components/Button";
 
 function App() {
-  let items = ["Astana", "Shymkent", "Almaty", "Aktau", "Oral"];
   return (
     <div>
-      <ListGroup items={items} heading="Cities" />
+      <Button onClick={() => console.log("CLicked")}>My Button</Button>
     </div>
   );
 }
