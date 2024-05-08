@@ -27,11 +27,17 @@ const ExpenseForm = ({ onSubmit }: Props) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ExpenseFormData>({ resolver: zodResolver(schema) });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit((data) => {
+        onSubmit(data);
+        reset();
+      })}
+    >
       <div className="mb-3">
         <label htmlFor="description" className="form-label">
           Description
@@ -43,7 +49,7 @@ const ExpenseForm = ({ onSubmit }: Props) => {
           className="form-control"
         />
         {errors.description && (
-          <p className="text-danger">{errors.description}</p>
+          <p className="text-danger">{errors.description.message}</p>
         )}
       </div>
       <div className="mb-3">
@@ -51,12 +57,14 @@ const ExpenseForm = ({ onSubmit }: Props) => {
           Amount
         </label>
         <input
-          {...register("amount")}
+          {...register("amount", { valueAsNumber: true })}
           id="amount"
           type="number"
           className="form-control"
         />
-        {errors.amount && <p className="text-danger">{errors.amount}</p>}
+        {errors.amount && (
+          <p className="text-danger">{errors.amount.message}</p>
+        )}
       </div>
       <div className="mb-3">
         <label htmlFor="category" className="form-label">
@@ -70,7 +78,9 @@ const ExpenseForm = ({ onSubmit }: Props) => {
             </option>
           ))}
         </select>
-        {errors.category && <p className="text-danger">{errors.category}</p>}
+        {errors.category && (
+          <p className="text-danger">{errors.category.message}</p>
+        )}
       </div>
       <button className="btn btn-primary">Submit</button>
     </form>
